@@ -39,19 +39,22 @@ body {
   font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
 }
 
-/* The page's colour is pinned to the screen, so the sticky title bar can
-   carry the same slice of it and vanish into the page. iPhone Safari ignores
-   background-attachment: fixed, hence a fixed layer instead. */
+/* Watercolour washes, held still behind the page as it scrolls. They fade to
+   plain paper well before the top and bottom of the screen, so the header and
+   Safari's toolbars only ever sit on flat paper and can't show a seam. */
 body::after {
   content: "";
-  position: absolute;
+  position: fixed;
   top: 0; left: 0; right: 0;
-  height: 760px;
+  height: 100lvh;
   z-index: -1;
+  pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 30% at 18% 50%, rgba(190, 230, 210, 0.95), transparent 72%),
-    radial-gradient(ellipse 80% 32% at 84% 60%, rgba(222, 208, 244, 0.95), transparent 72%),
-    radial-gradient(ellipse 50% 20% at 88% 34%, rgba(250, 212, 198, 0.85), transparent 72%);
+    radial-gradient(ellipse 70% 30% at 10% 42%, rgba(190, 230, 210, 0.95), transparent 72%),
+    radial-gradient(ellipse 70% 32% at 92% 60%, rgba(222, 208, 244, 0.95), transparent 72%),
+    radial-gradient(ellipse 45% 18% at 88% 30%, rgba(250, 212, 198, 0.85), transparent 72%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 90px, #000 230px, #000 calc(100% - 240px), transparent calc(100% - 110px));
+  mask-image: linear-gradient(to bottom, transparent 0, transparent 90px, #000 230px, #000 calc(100% - 240px), transparent calc(100% - 110px));
 }
 
 /* Film grain, like the app's page: purple specks and warm light specks,
@@ -241,7 +244,7 @@ main, header, footer { position: relative; }
 .menu nav {
   display: flex; flex-direction: column;
   padding: 8px 16px 34px;
-  background: #fbf8f2;
+  background: #f5f1eb;
   clip-path: polygon(0 0, 100% 0, 100.0% calc(100% - 2.9px), 97.0% calc(100% - 5.9px), 94.3% calc(100% - 4.8px), 90.7% calc(100% - 0.5px), 86.7% calc(100% - 0.3px), 82.9% calc(100% - 0.6px), 80.1% calc(100% - 3.8px), 75.2% calc(100% - 1.1px), 72.0% calc(100% - 5.6px), 66.6% calc(100% - 5.2px), 63.0% calc(100% - 8.8px), 60.3% calc(100% - 7.7px), 56.9% calc(100% - 1.3px), 54.1% calc(100% - 2.8px), 49.1% calc(100% - 1.6px), 44.9% calc(100% - 5.8px), 41.3% calc(100% - 4.9px), 38.6% calc(100% - 0.5px), 35.5% calc(100% - 6.1px), 31.7% calc(100% - 2.8px), 27.4% calc(100% - 4.1px), 24.0% calc(100% - 7.1px), 19.4% calc(100% - 2.2px), 15.2% calc(100% - 4.7px), 10.1% calc(100% - 6.6px), 6.7% calc(100% - 8.8px), 3.9% calc(100% - 3.8px), 0 calc(100% - 4px));
 }
 .menu a {
@@ -346,4 +349,10 @@ footer nav span { align-self: center; color: var(--muted); }
 }
 @media (prefers-reduced-motion: reduce) {
   .features.pile .card .pc, .features.pile .card .txt { transition: none !important; }
+}
+
+/* Between phone and computer (an iPad held upright), the alternating postcards
+   came within a few pixels of the window edge. */
+@media (min-width: 720px) and (max-width: 899px) {
+  main.wrap { padding-left: 48px; padding-right: 48px; }
 }
