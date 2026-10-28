@@ -26,7 +26,18 @@
 
 * { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+/* Safari paints the strip behind its bottom bar flat from the base colour,
+   with no grain, so the base is the paper as it looks under the grain
+   (#f5f1eb). The lighter paper itself is a layer under the grain. */
+html { -webkit-text-size-adjust: 100%; background-color: #f5f1eb; }
+html::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 100lvh;
+  z-index: -2;
+  background: #faf6ee;
+}
 
 body {
   position: relative;
@@ -34,7 +45,6 @@ body {
   min-height: 100vh;
   color: var(--text);
   font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  background-color: #faf6ee;
 }
 
 /* The page's colour is pinned to the screen, so the sticky title bar can
@@ -56,7 +66,10 @@ body::after {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  /* The large viewport, so the grain reaches behind Safari's bottom bar too;
+     with inset: 0 that strip showed bare, lighter paper. */
+  top: 0; left: 0; right: 0;
+  height: 100lvh;
   pointer-events: none;
   opacity: 0.16;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0 0.45 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
